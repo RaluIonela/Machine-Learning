@@ -1,0 +1,15 @@
+# Core scientific stack
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.1
+
+# Deep learning framework
+torch==2.4.0
+torchaudio==2.4.0
+
+# Visualisation and utilities
+matplotlib==3.9.2
+seaborn==0.13.2
+
+# Optional (for notebook visualisation and reproducibility)
+tqdm==4.66.4
