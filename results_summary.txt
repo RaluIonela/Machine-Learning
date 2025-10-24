@@ -1,0 +1,63 @@
+===========================================================
+AUTISM-FRIENDLY SOUNDSCAPE PERSONALIZER - MODEL RESULTS
+===========================================================
+
+Project: Predicting Overstimulation and Recommending Calming Music
+Author: Ionela Raluca Grigore
+Date: October 2025
+Module: Machine Learning (COM6404)
+Institution: Univeristy of Greater Manchester 
+
+-----------------------------------------------------------
+1. MODEL PERFORMANCE METRICS
+-----------------------------------------------------------
+
+| Model               | PR-AUC | ROC-AUC | F1-Score | Brier | ECE  |
+|---------------------|--------|---------|----------|-------|------|
+| Logistic Regression | 0.26   | 0.66    | 0.36     | 0.25  | 0.09 |
+| Random Forest       | 0.33   | 0.69    | 0.41     | 0.22  | 0.08 |
+| LSTM (Deep Model)   | 0.57   | 0.72    | 0.48     | 0.20  | 0.05 |
+
+- The **LSTM** demonstrates superior discrimination (highest PR-AUC and ROC-AUC)
+  and the best calibration (lowest Brier and ECE).
+
+-----------------------------------------------------------
+2. FEATURE GROUP ABLATION ANALYSIS
+-----------------------------------------------------------
+
+The LSTM model was retrained after systematically removing
+specific feature groups to determine their relative contribution.
+
+| Removed Feature Group | ΔPR-AUC | Interpretation |
+|------------------------|---------|----------------|
+| Music features         | -0.17   | Most influential predictors of overstimulation risk |
+| Noise features         | -0.10   | Moderate influence (environmental factor) |
+| Context/time features  | -0.04   | Minor contribution to short-term prediction |
+
+-----------------------------------------------------------
+3. RECOMMENDATION MODULE RESULTS
+-----------------------------------------------------------
+
+Goal: "Calm" — select tracks minimizing overstimulation risk.
+
+Top-3 recommended tracks based on final LSTM predictions:
+1. calm_piano  (Predicted risk: 0.12)
+2. soft_strings (Predicted risk: 0.15)
+3. lo_fi_focus (Predicted risk: 0.19)
+
+Observation:
+The recommender consistently prioritizes low-arousal, mid-tempo tracks,
+aligning with prior findings in affective computing (Carvalho et al., 2022;
+Su, Chang and Chen, 2020).
+
+-----------------------------------------------------------
+4. ETHICAL COMPLIANCE
+-----------------------------------------------------------
+
+- Dataset fully synthetic (no personal or recorded classroom data).
+- All experiments are reproducible using environment details in README.md.
+- Research adheres to ethical-by-design AI principles (UNESCO, 2021).
+
+-----------------------------------------------------------
+End of File
+===========================================================
