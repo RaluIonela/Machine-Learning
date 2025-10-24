@@ -1,0 +1,62 @@
+import numpy as np
+import pandas as pd
+
+# Reproducibility
+np.random.seed(42)
+
+# Parameters
+n_days = 10
+samples_per_day = 600  # 10 seconds resolution for a ~100 min session
+total_samples = n_days * samples_per_day
+
+# Time and context features
+time_index = np.arange(total_samples)
+hour = (time_index % samples_per_day) / samples_per_day * 6 + 8  # 8 AM–2 PM
+sin_time = np.sin(2 * np.pi * hour / 24)
+cos_time = np.cos(2 * np.pi * hour / 24)
+
+# Classroom activity types
+activities = np.random.choice(['quiet_work', 'group_discussion', 'presentation', 'break'], total_samples)
+activity_map = {'quiet_work': 0, 'group_discussion': 1, 'presentation': 2, 'break': 3}
+activity_enc = np.vectorize(activity_map.get)(activities)
+
+# Acoustic & musical features
+noise_db = np.random.normal(loc=55, scale=10, size=total_samples)
+tempo = np.random.normal(loc=100, scale=30, size=total_samples)
+valence = np.clip(np.random.normal(loc=0.5, scale=0.2, size=total_samples), 0, 1)
+arousal = np.clip(np.random.normal(loc=0.5, scale=0.2, size=total_samples), 0, 1)
+spectral_centroid = np.random.normal(loc=2000, scale=500, size=total_samples)
+loudness = np.random.normal(loc=-20, scale=5, size=total_samples)
+
+# Target variable: overstimulation probability
+# Nonlinear combination of noise, arousal, and tempo + random factor
+risk_score = (
+    0.03 * (noise_db - 55) +
+    0.5 * (arousal - 0.5) +
+    0.002 * (tempo - 100) +
+    0.1 * (activity_enc == 1) +  # group_discussion
+    0.05 * np.random.randn(total_samples)
+)
+prob_overstim = 1 / (1 + np.exp(-risk_score))
+overstim = (prob_overstim > 0.6).astype(int)
+
+# Combine into DataFrame
+df = pd.DataFrame({
+    'time_step': time_index,
+    'hour': hour,
+    'sin_time': sin_time,
+    'cos_time': cos_time,
+    'activity': activities,
+    'noise_db': noise_db,
+    'tempo': tempo,
+    'valence': valence,
+    'arousal': arousal,
+    'spectral_centroid': spectral_centroid,
+    'loudness': loudness,
+    'overstim': overstim
+})
+
+# Save CSV
+df.to_csv("soundscape_dataset.csv", index=False)
+print("✅ Dataset saved as soundscape_dataset.csv")
+print(df.head())
